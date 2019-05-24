@@ -1,0 +1,23 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+
+@model List<NetCore.Models.ViewModel.MovieViewModel>
+
+@foreach (var item in Model)
+{
+    @*<h4>@item.name</h4>*@
+
+    @Html.DisplayFor(modelItem => item.Name);
+    <br />
+    @Html.DisplayFor(modelIten => item.Price);
+    <br />
+    <a href="/Home/EditSave?id=@item.Id">编辑</a>
+
+    <br />
+}
+<!--添加 TagHelper版本号 -->
+@*<img src="~/images/123.jpg" asp-append-version="true">*@
