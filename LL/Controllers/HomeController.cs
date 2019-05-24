@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace LL.Controllers
 {
@@ -14,8 +11,10 @@ namespace LL.Controllers
         /// </summary>
         /// <returns></returns>
         [Authorize]
-           public IActionResult Index()
+        public IActionResult Index()
         {
+            //获取登录信息
+
             var a = HttpContext.User.Claims.Select(d => new { d.Type, d.Value }).ToList();
             var a1 = a[0].Value;
             var a2 = a[1].Value;
