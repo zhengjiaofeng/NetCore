@@ -13,7 +13,7 @@ namespace LL.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            //获取登录信息
+            //获取登录信息1
 
             var a = HttpContext.User.Claims.Select(d => new { d.Type, d.Value }).ToList();
             var a1 = a[0].Value;
