@@ -22,14 +22,23 @@ namespace LL.Controllers
             {
                 return Redirect("/Account/Index");
             }
-            var claims = new List<Claim>
-                {
-                    new Claim("username", model.UserName),
-                    new Claim("role", "Member")
-                };
+            //var claims = new List<Claim>
+            //    {
+            //        new Claim("UserName", model.UserName),
+            //        new Claim("Age","18")
+            //    };
+
+            ////用户标识
+            //await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "LLCoreCookie")), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
 
             //用户标识
-            await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "LLCoreCookie")),new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
+            //ClaimTypes 外部申明属性
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.Sid, model.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
+
+            await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
+
             return RedirectToAction("Index", "Home");
 
         }
