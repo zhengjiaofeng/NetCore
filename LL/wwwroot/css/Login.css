@@ -4,7 +4,7 @@
     height: 100%;
 }
 .row {
-    display: table-cell;
+    /*display: table-cell;*/
     vertical-align: middle;
 }
 /* centered columns styles */
@@ -25,4 +25,27 @@
 
 .carousel-indicators {
  bottom:45%;
+}
+
+.input {
+    border: 1px solid rgba(255,255,255,.15);
+    /*背景色*/
+    background: rgba(45,45,45,.15);
+}
+
+/*修改placeholder的默认颜色*/
+input::-webkit-input-placeholder {
+    color:white;
+}
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #585c89;
+}
+
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #585c89;
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #585c89;
 }

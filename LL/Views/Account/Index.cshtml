@@ -32,19 +32,21 @@
         </div>
     </div>
 
-    <div class="carousel-indicators">
-        <div class="row  row-centered">
-            <form id="form1" action="/Account/Login" method="post">
-                <div class="form-group">
-                    <input name="UserName" class="form-control" placeholder="username" />
-                </div>
-                <div class="form-group">
-                    <input name="PassWord" type="password" class="form-control" placeholder="password" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="form-control btn btn-info" value="登录" />
-                </div>
-            </form>
+    <div class="carousel-indicators ">
+        <div class="container-fluid">
+            <div class="row  row-centered justify-content-md-center" style="width:100%">
+                <form id="form1" action="/Account/Login" method="post" class="col-8 " >
+                    <div class="form-group ">
+                        <input name="UserName" class="form-control-lg col-5 input" placeholder="username" autocomplete="off"  />
+                    </div>
+                    <div class="form-group ">
+                        <input name="PassWord" type="password" class="form-control-lg col-5 input" placeholder="password" />
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" class="form-control btn btn-info btn-lg col-5" value="登录" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
