@@ -16,7 +16,13 @@ namespace LL.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login(LoginViewModel model)
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="ReturnUrl"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Login(LoginViewModel model,string ReturnUrl)
         {
             if (model == null)
             {
@@ -39,6 +45,17 @@ namespace LL.Controllers
 
             await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
 
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> LoginOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
 
         }

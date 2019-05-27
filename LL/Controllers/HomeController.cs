@@ -27,6 +27,9 @@ namespace LL.Controllers
              * 要使用 外部申明属性ClaimTypes，可使用 @User.Identity.Name 获取信息
              */
             #endregion
+            //是否登录标识
+            bool isLogin = HttpContext.User.Identity.IsAuthenticated;
+            string type = User.Identity.AuthenticationType; //验证方式
             return View();
         }
     }
