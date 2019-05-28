@@ -30,6 +30,7 @@ namespace LL.Controllers
             var s1 = RsaHelep.RSAEncrypt("123", rsaPublicKey);
             var result1 = RsaHelep.RSADecrypt(s1, rsaPrivateKey);
             #endregion
+            ViewData["rsaPrivateKey"] = rsaPrivateKey;
             return View();
         }
 
