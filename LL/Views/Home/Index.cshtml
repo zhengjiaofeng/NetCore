@@ -12,8 +12,7 @@
     <script src="~/js/Common/common.js" asp-append-version="true"></script>
     <script>
         $(function () {
-            alert("1");
-            commonajax.Ajax("POST", "/Home/GetData", function (d) {
+            commonajax.Ajax("GET", "/Home/GetData", null, function (d) {
                 alert(d);
             }, null);
         });

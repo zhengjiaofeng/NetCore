@@ -37,7 +37,7 @@ namespace LL.Controllers
        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult GetData()
         {
-            return Json("1");
+            return Json("GetData");
         }
     }
 }

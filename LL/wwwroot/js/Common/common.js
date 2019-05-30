@@ -42,11 +42,11 @@ var commonajax = {
             //data: JSON.stringify(data),
             data: data,
             dataType: 'json',
-            beforeSend: function () {
+            beforeSend: function (XMLHttpRequest) {
                 var token = localStorage.getItem("token");
                 console.log(token);
                 if (token != null) {
-                    //request.setRequestHeader("Authorization", 'Bearer '+token);
+                    XMLHttpRequest.setRequestHeader("Authorization", 'Bearer '+token);
                 }
             },
             error: function () { DiaLog("亲，提交出错了，稍后再试哦……") },
