@@ -7,11 +7,11 @@ namespace LL.Models.ViewModels
         /// <summary>
         /// 状态码
         /// </summary>
-        public int StateCode { get; set; }
+        public int stateCode { get; set; }
 
-        public bool IsSucess { get; set; }
-        public string Msg { get; set; }
+        public bool isSucess { get; set; }
+        public string msg { get; set; }
 
-        public List<T> Data { get; set; }
+        public List<T> data { get; set; }
     }
 }
