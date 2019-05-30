@@ -32,6 +32,8 @@ var DoLogin = {
         }
         commonajax.Ajax("POST", "Account/Login", data, function (d) {
             if (d.isSucess == true) {
+                localStorage.removeItem("token");
+                localStorage.setItem("token", d.token);
                 window.location.href = d.msg;
             } else {
                 common.LayerAlert(d.msg);

@@ -11,6 +11,10 @@ namespace LL.Models.ViewModels
 
         public bool isSucess { get; set; }
         public string msg { get; set; }
+        /// <summary>
+        /// Token
+        /// </summary>
+        public string token { get; set; }
 
         public List<T> data { get; set; }
     }

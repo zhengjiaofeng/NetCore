@@ -5,20 +5,25 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace LL.Controllers
 {
     public class AccountController : Controller
     {
-        private IOptions<LLSetting> settings;
+        private readonly IOptions<LLSetting> settings;
+        private readonly IOptions<JWTSetting> jwtsettings;
         private string rsaPrivateKey = "";
         private string rsaPublicKey = "";
-        public AccountController(IOptions<LLSetting> _settings)
+        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings)
         {
             settings = _settings;
+            jwtsettings = _wtsettings;
             rsaPrivateKey = settings.Value.RsaPrivateKey;
             rsaPublicKey = settings.Value.RsaPublicKey;
         }
@@ -67,6 +72,7 @@ namespace LL.Controllers
                 var decryptPW = RsaHelep.RSADecrypt(model.PassWord, rsaPrivateKey);
                 #endregion
 
+                #region cookioe 身份
                 //var claims = new List<Claim>
                 //    {
                 //        new Claim("UserName", model.UserName),
@@ -84,7 +90,28 @@ namespace LL.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
 
                 await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
+                #endregion
+
+                #region Token
+
+                //对称秘钥
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsettings.Value.SecretKey));
+                //签名证书(秘钥，加密算法)
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                //.NET Core’s JwtSecurityToken class takes on the heavy lifting and actual
+
+                var token = new JwtSecurityToken(
+                  issuer: jwtsettings.Value.Issuer,
+                  audience: jwtsettings.Value.Audience,
+                  expires: DateTime.Now.AddMinutes(21),
+                  //签名
+                  signingCredentials: creds);
+
+
+                #endregion
+
                 result.isSucess = true;
+                result.token = new JwtSecurityTokenHandler().WriteToken(token);
                 if (!string.IsNullOrEmpty(ReturnUrl))
                 {
                     result.msg = ReturnUrl;

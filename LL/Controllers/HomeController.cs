@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -31,6 +32,12 @@ namespace LL.Controllers
             bool isLogin = HttpContext.User.Identity.IsAuthenticated;
             string type = User.Identity.AuthenticationType; //验证方式
             return View();
+        }
+        [HttpGet]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult GetData()
+        {
+            return Json("1");
         }
     }
 }
