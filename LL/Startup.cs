@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Text;
 
 namespace LL
@@ -27,10 +26,10 @@ namespace LL
             services.Configure<LLSetting>(Configuration.GetSection("LLSetting"));
             services.Configure<JWTSetting>(Configuration.GetSection("JWTSetting"));
 
-            //由于初始化的时候我们就需要用，所以使用Bind的方式读取配置
-            //将配置绑定到JwtSettings实例中
-            JWTSetting jwtSettings = new JWTSetting();
-            Configuration.Bind( jwtSettings);
+            #region ConfigureServices中读取配置
+            var Issuer = Configuration.GetSection("JWTSetting").GetSection("Issuer").Value;
+            #endregion
+
             //添加认证Cookie信息
             services.AddAuthentication(CookieScheme) // Sets the default scheme to cookies
                          .AddCookie(CookieScheme, options =>
@@ -41,10 +40,10 @@ namespace LL
 
                          })
 
-                         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,jwtoptions =>
-                         {
-                             jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                             {
+                         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtoptions =>
+                          {
+                              jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                              {
                                  //Token颁发机构
                                  ValidIssuer = "https://localhost:44303/",
                                  //颁发给谁
@@ -59,7 +58,7 @@ namespace LL
                                  ///允许的服务器时间偏移量
                                  //ClockSkew = TimeSpan.Zero
                              };
-                         });
+                          });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -78,6 +77,8 @@ namespace LL
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            JWTSetting jwtSettings = new JWTSetting();
+            Configuration.Bind(jwtSettings);
             ///添加静态资源访问
             app.UseStaticFiles();
 
