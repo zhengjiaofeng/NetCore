@@ -30,16 +30,34 @@ var DoLogin = {
             UserName: userName,
             PassWord: common.rsaencrypt($("#rsaPublicKey").val(), passWord)
         }
-        commonajax.Ajax("POST", "Account/Login", data, function (d) {
-            if (d.isSucess == true) {
-                localStorage.removeItem("token");
-                localStorage.setItem("token", d.token);
-                window.location.href = d.msg;
-            } else {
-                common.LayerAlert(d.msg);
+        var url ="Account/Login"
+          $.ajax({
+            url: url,
+              type: "POST",
+            async: false,
+            data: data,
+            dataType: 'json',
+            error: function () { DiaLog("亲，提交出错了，稍后再试哦……") },
+            success: function (d) {
+                if (d.isSucess == true) {
+                    var cookie = new cookiehelep();
+                    cookie.cookieremove("cookie_token")
+
+                    var expiresDate = new Date();
+                    expiresDate.setTime(expiresDate.getTime() + (1 * 60 * 1000)); 
+                    cookie.cookieset("cookie_token", d.token, expiresDate)
+                    window.location.href = d.msg;
+                } else {
+                    common.LayerAlert(d.msg);
+                }
+            },
+            error: function errorCallback(xmlHttpRequest, textStatus, errorThrown) {
+                common.LayerAlert(errorThrown + ":" + textStatus);
             }
-        }, null);
+        });
     
     }
 
 };
+
+

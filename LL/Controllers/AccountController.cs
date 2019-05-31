@@ -89,7 +89,7 @@ namespace LL.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Sid, model.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
 
-                await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(20) });
+                await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(60) });
                 #endregion
 
                 #region Token
@@ -103,7 +103,7 @@ namespace LL.Controllers
                 var token = new JwtSecurityToken(
                   issuer: jwtsettings.Value.Issuer,
                   audience: jwtsettings.Value.Audience,
-                  expires: DateTime.Now.AddMinutes(21),
+                  expires: DateTime.Now.AddMinutes(65),
                   //签名
                   signingCredentials: creds);
 

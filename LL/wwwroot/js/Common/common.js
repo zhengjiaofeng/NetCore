@@ -33,20 +33,19 @@ var commonajax = {
     //ajax 封装
     Ajax: function (method, url, data, successfn, errorfn) {
 
-        console.log(data);
         $.ajax({
             url: url,
             type: method,
             async: false,
-            traditional: true,
-            //data: JSON.stringify(data),
+            //traditional: true,
             data: data,
             dataType: 'json',
             beforeSend: function (XMLHttpRequest) {
-                var token = localStorage.getItem("token");
-                console.log(token);
-                if (token != null) {
-                    XMLHttpRequest.setRequestHeader("Authorization", 'Bearer '+token);
+                var cookie = new cookiehelep();
+                var cookie_token = cookie.cookieget("cookie_token");
+                if (cookie_token != null) {
+                    //头部添加Bearer token
+                    XMLHttpRequest.setRequestHeader("Authorization", 'Bearer ' + cookie_token);
                 }
             },
             error: function () { DiaLog("亲，提交出错了，稍后再试哦……") },
@@ -65,4 +64,31 @@ var commonajax = {
     }
     
 }
+
+
+class cookiehelep {
+    init() {
+
+    }
+    //设置缓存
+    cookieset(key, val, expiresTime) {
+        /*
+         *expires：（Number|Date）有效期；设置一个整数时，单位是天；也可以设置一个日期对象作为Cookie的过期日期；
+         *path：（String）创建该Cookie的页面路径；
+         *domain：（String）创建该Cookie的页面域名；
+         *secure：（Booblean）如果设为true，那么此Cookie的传输会要求一个安全协议，例如：HTTPS；
+         */
+        $.cookie(key, val, { expires: expiresTime });
+    }
+    //读取cookei
+    cookieget(key) {
+        return $.cookie(key);
+    }
+    //删除
+    cookieremove(key) {
+        $.cookie(key, null);   //通过传递null作为cookie的值即可
+
+    }
+}
+
 
