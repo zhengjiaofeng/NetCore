@@ -121,7 +121,6 @@ namespace LL.Controllers
                     result.msg = "/Home/Index";
                 }
 
-
             }
             catch (Exception ex)
             {

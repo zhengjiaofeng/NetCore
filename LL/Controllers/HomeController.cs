@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using LLBLL.IService;
+using LLBLL.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LL.Controllers
 {
     public class HomeController : Controller
     {
+        private IUsersService iUsersService;
+        public HomeController(IUsersService _iUsersService)
+        {
+            iUsersService = _iUsersService;
+        }
+
         /// <summary>
         /// Authorize--身份验证标识
         /// </summary>
@@ -37,7 +46,9 @@ namespace LL.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult GetData()
         {
-            return Json("GetData");
+            List<Users> userList = new List<Users>();
+            userList = iUsersService.GetUsers();
+            return Json(userList);
         }
     }
 }
