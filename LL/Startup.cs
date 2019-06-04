@@ -34,6 +34,7 @@ namespace LL
             var Issuer = Configuration.GetSection("JWTSetting").GetSection("Issuer").Value;
             #endregion
 
+            #region Authentication cookie,JwtBearer 认证配置
             //添加认证Cookie信息
             services.AddAuthentication(CookieScheme) // Sets the default scheme to cookies
                          .AddCookie(CookieScheme, options =>
@@ -45,24 +46,27 @@ namespace LL
                          })
 
                          .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtoptions =>
-                          {
-                              jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                              {
-                                  //Token颁发机构
-                                  ValidIssuer = "https://localhost:44303/",
-                                  //颁发给谁
-                                  ValidAudience = "https://localhost:44303/",
-                                  //这里的key要进行加密，需要引用Microsoft.IdentityModel.Tokens
-                                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LL_2AWopCMMgEIWt6KkzxEJD0EA4xreXLINaQIDAQABAoGAcUQIoKWyldZa8xnPDJTMKIV8GpeuzebKWvwp5dIu+miTdzmZX4weeHADRNb")),
-                                  //验证token 有效期
-                                  ValidateLifetime = true,
-                                  //ValidateIssuer = true,
-                                  //ValidateAudience = true,
-                                  //ValidateIssuerSigningKey=true
-                                  ///允许的服务器时间偏移量
-                                  //ClockSkew = TimeSpan.Zero
-                              };
-                          });
+                         {
+                             jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                             {
+                                 //Token颁发机构
+                                 ValidIssuer = "https://localhost:44303/",
+                                 //颁发给谁
+                                 ValidAudience = "https://localhost:44303/",
+                                 //这里的key要进行加密，需要引用Microsoft.IdentityModel.Tokens
+                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LL_2AWopCMMgEIWt6KkzxEJD0EA4xreXLINaQIDAQABAoGAcUQIoKWyldZa8xnPDJTMKIV8GpeuzebKWvwp5dIu+miTdzmZX4weeHADRNb")),
+                                 //验证token 有效期
+                                 ValidateLifetime = true,
+                                 //ValidateIssuer = true,
+                                 //ValidateAudience = true,
+                                 //ValidateIssuerSigningKey=true
+                                 ///允许的服务器时间偏移量
+                                 //ClockSkew = TimeSpan.Zero
+                             };
+                         });
+            #endregion
+
+            #region 依赖注入 服务
 
             //注册EF上下文
             services.AddDbContext<LLDbContext>(options =>
@@ -70,13 +74,20 @@ namespace LL
                 options.UseSqlServer(
               Configuration.GetConnectionString("LLDbContext"));
             });
-            #region 依赖注入
+
             // Transient： 每一次GetService都会创建一个新的实例
             // Scoped：  在同一个Scope内只初始化一个实例 ，可以理解为（ 每一个request级别只创建一个实例，同一个http request会在一个 scope内）
             // Singleton ：整个应用程序生命周期以内只创建一个实例
             services.AddTransient<IUsersService, UsersService>();
+
             #endregion
 
+            #region 初始化数据
+            //获取注册是服务
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            LLDbContext dbcontext = serviceProvider.GetService<LLDbContext>();
+            DataInitialize.DataInit(dbcontext);
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -95,8 +106,7 @@ namespace LL
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            JWTSetting jwtSettings = new JWTSetting();
-            Configuration.Bind(jwtSettings);
+            //中间件排序很重要--排序错误会导致中间件异常错误  https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/middleware/index?view=aspnetcore-2.1#order
             ///添加静态资源访问
             app.UseStaticFiles();
 
@@ -107,9 +117,7 @@ namespace LL
             {
                 routes.MapRoute(name: "default", template: "{controller=Account}/{action=Index}/{id?}");
             });
-            #region 初始化数据
-            //DataInitialize.DataInit(app.ApplicationServices);
-            #endregion
+
         }
     }
 }
