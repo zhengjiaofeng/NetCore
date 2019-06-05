@@ -83,14 +83,15 @@ namespace LL
             #endregion
 
             #region 初始化数据
-            //获取注册是服务
+            //获取注册的服务
             ServiceProvider serviceProvider = services.BuildServiceProvider();
             LLDbContext dbcontext = serviceProvider.GetService<LLDbContext>();
             DataInitialize.DataInit(dbcontext);
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            //.NETCore 数据保护组件
+            services.AddDataProtection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

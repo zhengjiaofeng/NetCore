@@ -2,6 +2,7 @@
 using LLBLL.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,18 @@ namespace LL.Controllers
     public class HomeController : Controller
     {
         private IUsersService iUsersService;
-        public HomeController(IUsersService _iUsersService)
+        private readonly IDataProtector protector;
+        public HomeController(IUsersService _iUsersService, IDataProtectionProvider _provider)
         {
             iUsersService = _iUsersService;
+            #region .net core 保护组件
+
+            protector = _provider.CreateProtector("users_Protector");
+            //解密
+            var ss = "CfDJ8AtfLGrOSnNOoXdGbxHGy3J64gbZWE7TajcjcfjLjqag9-9z2e41C72HokijShZ0l3SZ4YcSAEN4QrQ07TiYi1RrY5lmqkX4R54nQyJ6RjmrqixxYI_kbEy8jhwFGgyOHA";
+            //解密
+            var result = protector.Unprotect(ss);
+            #endregion
         }
 
         /// <summary>
@@ -42,13 +52,20 @@ namespace LL.Controllers
             string type = User.Identity.AuthenticationType; //验证方式
             return View();
         }
+
+        #region  JwtBearer 数据保护组件
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult GetData()
         {
             List<Users> userList = new List<Users>();
             userList = iUsersService.GetUsers();
-            return Json(userList);
+
+            var result = userList.Select(d => new { Id = protector.Protect(d.Id.ToString()), UserName = d.UserName }).ToList();
+            return Json(result);
         }
+
+        #endregion
+
     }
 }
