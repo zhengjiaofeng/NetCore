@@ -6,7 +6,8 @@ core:
 3.EFcore
 4.JwtBearer(planting 覆写验证返回)
 5.SignalR （planting）
-6.数据保护IDataProtectionProvider(planting)
+6.数据保护IDataProtectionProvider
+7.NLog组件
 
 js:
 1.bootstrap4
