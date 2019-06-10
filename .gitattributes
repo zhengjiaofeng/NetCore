@@ -62,6 +62,6 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-#*.js linguist-language=c#
-#*.css linguist-language=c#
-#*.html linguist-language=c#
+ *.js linguist-language=c#
+ *.css linguist-language=c#
+ *.html linguist-language=c#
