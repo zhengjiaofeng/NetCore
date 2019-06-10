@@ -15,7 +15,7 @@ namespace LLBLL.Common.Tool
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string MD5Encry(string str)
+        public static string Encry(string str)
         {
             //32位大写
             using (var md5 = MD5.Create())

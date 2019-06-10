@@ -21,7 +21,7 @@ namespace LLBLL.Common
                     return;
                 }
                 //添加用户
-                dbContext.Users.AddRange(new Users { UserName = "ZJF", PassWord = Md5Encry.MD5Encry("123456"), Delstate = 0 }, new Users { UserName = "LL", PassWord = Md5Encry.MD5Encry("123456"), Delstate = 0 });
+                dbContext.Users.AddRange(new Users { UserName = "ZJF", PassWord = Md5Encry.Encry("123456"), Delstate = 0 }, new Users { UserName = "LL", PassWord = Md5Encry.Encry("123456"), Delstate = 0 });
                 dbContext.SaveChangesAsync();
             }
             catch (Exception ex)

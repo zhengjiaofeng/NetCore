@@ -26,9 +26,10 @@ var DoLogin = {
             common.LayerAlert("密码不能为空！");
             return;
         }
+        console.log(md5(passWord))
         var data = {
             UserName: userName,
-            PassWord: common.rsaencrypt($("#rsaPublicKey").val(), passWord)
+            PassWord: common.rsaencrypt($("#rsaPublicKey").val(), md5(passWord))
         }
         var url ="Account/Login"
           $.ajax({

@@ -1,6 +1,9 @@
 ﻿using LL.Common;
 using LL.Models.ComomModel;
 using LL.Models.ViewModels;
+using LLBLL.Common.Tool;
+using LLBLL.IService;
+using LLBLL.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +23,14 @@ namespace LL.Controllers
         private readonly IOptions<JWTSetting> jwtsettings;
         private string rsaPrivateKey = "";
         private string rsaPublicKey = "";
-        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings)
+        private IUsersService iUsersService;
+        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IUsersService _iUsersService)
         {
             settings = _settings;
             jwtsettings = _wtsettings;
             rsaPrivateKey = settings.Value.RsaPrivateKey;
             rsaPublicKey = settings.Value.RsaPublicKey;
+            iUsersService = _iUsersService;
         }
         public IActionResult Index()
         {
@@ -72,6 +77,26 @@ namespace LL.Controllers
                 var decryptPW = RsaHelep.RSADecrypt(model.PassWord, rsaPrivateKey);
                 #endregion
 
+                #region 登录
+                Users users =await iUsersService.GetUserByUserName(model.UserName);
+
+                if (users == null)
+                {
+                    result.isSucess = false;
+                    result.msg = "该用户并未注册！";
+                    return Json(result);
+                }
+
+                string rsa_dec_pw= RsaHelep.RSADecrypt(model.PassWord, rsaPrivateKey);
+                if (users.PassWord.ToUpper() != rsa_dec_pw.ToUpper())
+                {
+                    result.isSucess = false;
+                    result.msg = "密码错误！";
+                    return Json(result);
+                }
+
+
+                #region 登录成功 cooKioe token
                 #region cookioe 身份
                 //var claims = new List<Claim>
                 //    {
@@ -109,6 +134,8 @@ namespace LL.Controllers
 
 
                 #endregion
+                #endregion
+
 
                 result.isSucess = true;
                 result.token = new JwtSecurityTokenHandler().WriteToken(token);
@@ -120,6 +147,9 @@ namespace LL.Controllers
                 {
                     result.msg = "/Home/Index";
                 }
+                #endregion
+
+
 
             }
             catch (Exception ex)
