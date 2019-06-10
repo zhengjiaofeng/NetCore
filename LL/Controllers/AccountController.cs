@@ -7,6 +7,7 @@ using LLBLL.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -24,13 +25,15 @@ namespace LL.Controllers
         private string rsaPrivateKey = "";
         private string rsaPublicKey = "";
         private IUsersService iUsersService;
-        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IUsersService _iUsersService)
+        private ILogger<AccountController> logger;
+        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IUsersService _iUsersService, ILogger<AccountController> _logger)
         {
             settings = _settings;
             jwtsettings = _wtsettings;
             rsaPrivateKey = settings.Value.RsaPrivateKey;
             rsaPublicKey = settings.Value.RsaPublicKey;
             iUsersService = _iUsersService;
+            logger = _logger;
         }
         public IActionResult Index()
         {
@@ -156,6 +159,7 @@ namespace LL.Controllers
             {
                 result.isSucess = false;
                 result.msg = "系统异常，请重新提交！";
+                logger.LogError("ex:" + ex.ToString());
             }
 
             return Json(result);

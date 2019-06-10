@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using System.Text;
 
 namespace LL
@@ -96,7 +99,7 @@ namespace LL
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -108,13 +111,17 @@ namespace LL
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            #region Nlog
+            loggerFactory.AddNLog();
+            env.ConfigureNLog("NLog.config");
+            #endregion
             //中间件排序很重要--排序错误会导致中间件异常错误  https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/middleware/index?view=aspnetcore-2.1#order
             ///添加静态资源访问
             app.UseStaticFiles();
 
             //验证中间件--cookie身份认证  Must go before UseMvc
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "default", template: "{controller=Account}/{action=Index}/{id?}");
