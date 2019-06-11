@@ -20,12 +20,25 @@ namespace LL.Controllers
 {
     public class AccountController : Controller
     {
+        #region 服务声明
         private readonly IOptions<LLSetting> settings;
         private readonly IOptions<JWTSetting> jwtsettings;
+        /// <summary>
+        /// 公钥
+        /// </summary>
         private string rsaPrivateKey = "";
+
+        /// <summary>
+        /// 私钥
+        /// </summary>
         private string rsaPublicKey = "";
         private IUsersService iUsersService;
+        /// <summary>
+        /// 日志
+        /// </summary>
         private ILogger<AccountController> logger;
+
+        #endregion
         public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IUsersService _iUsersService, ILogger<AccountController> _logger)
         {
             settings = _settings;

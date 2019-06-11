@@ -12,10 +12,14 @@ namespace LL.Controllers
     public class HomeController : Controller
     {
         private IUsersService iUsersService;
+        /// <summary>
+        /// 加密组件
+        /// </summary>
         private readonly IDataProtector protector;
         public HomeController(IUsersService _iUsersService, IDataProtectionProvider _provider)
         {
             iUsersService = _iUsersService;
+
             #region .net core 保护组件
 
             protector = _provider.CreateProtector("users_Protector");
@@ -50,6 +54,7 @@ namespace LL.Controllers
             //是否登录标识
             bool isLogin = HttpContext.User.Identity.IsAuthenticated;
             string type = User.Identity.AuthenticationType; //验证方式
+         
             return View();
         }
 
@@ -67,5 +72,9 @@ namespace LL.Controllers
 
         #endregion
 
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

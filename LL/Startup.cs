@@ -1,4 +1,6 @@
-﻿using LL.Models.ComomModel;
+﻿
+using LL.Common.Middlewares;
+using LL.Models.ComomModel;
 using LLBLL.Common;
 using LLBLL.IService;
 using LLBLL.Service;
@@ -24,6 +26,9 @@ namespace LL
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; set; }
+        /// <summary>
+        /// cookie的名称
+        /// </summary>
         public const string CookieScheme = "LLCoreCookie1";
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -44,7 +49,7 @@ namespace LL
                          {
                              options.AccessDeniedPath = "/Account/Denied"; //禁止访问路径：当用户试图访问资源时，但未通过该资源的任何授权策略，请求将被重定向到这个相对路径（没有权限跳转）。
                              options.LoginPath = "/Account/Index";// 登录路径：这是当用户试图访问资源但未经过身份验证时，程序将会将请求重定向到这个相对路径。
-                            
+
                              //options.SlidingExpiration = true;  //Cookie可以分为永久性的和临时性的。 临时性的是指只在当前浏览器进程里有效，浏览器一旦关闭就失效（被浏览器删除）。 永久性的是指Cookie指定了一个过期时间，在这个时间到达之前，此cookie一直有效（浏览器一直记录着此cookie的存在）。 slidingExpriation的作用是，指示浏览器把cookie作为永久性cookie存储，但是会自动更改过期时间，以使用户不会在登录后并一直活动，但是一段时间后却自动注销。也就是说，你10点登录了，服务器端设置的TimeOut为30分钟，如果slidingExpriation为false,那么10:30以后，你就必须重新登录。如果为true的话，你10:16分时打开了一个新页面，服务器就会通知浏览器，把过期时间修改为10:46。 更详细的说明还是参考MSDN的文档。
 
                          })
@@ -94,8 +99,11 @@ namespace LL
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            #region 数据保护组件
             //.NETCore 数据保护组件
             services.AddDataProtection();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,17 +119,33 @@ namespace LL
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
             #region Nlog
             loggerFactory.AddNLog();
             env.ConfigureNLog("NLog.config");
             #endregion
+
+            #region  中间件
+            /*
+             *1.app.Use()，IApplicationBuilder接口原生提供，注册等都用它。
+             *2.app.Run() ，是一个扩展方法，它需要一个RequestDelegate委托，里面包含了Http的上下文信息，没有next参数，因为它总是在管道最后一步执行。
+             *3.app.Map()，也是一个扩展方法，类似于MVC的路由，用途一般是一些特殊请求路径的处理。如：www.example.com/token 等。 映射中间件
+             *4.app.UseMiddleware<>()
+             */
+            //方式1
+            //app.UseMiddleware<NotFoundMiddleware>();
+
+            //方式2
+            app.UseLLNotFoundMiddleware();
+            #endregion
+
             //中间件排序很重要--排序错误会导致中间件异常错误  https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/middleware/index?view=aspnetcore-2.1#order
             ///添加静态资源访问
             app.UseStaticFiles();
 
             //验证中间件--cookie身份认证  Must go before UseMvc
             app.UseAuthentication();
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "default", template: "{controller=Account}/{action=Index}/{id?}");
