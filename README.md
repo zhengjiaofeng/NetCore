@@ -9,6 +9,7 @@ core:
 6.数据保护IDataProtectionProvider
 7.NLog组件
 8.本地化多语言(planting)
+9.自定义中间件Middle
 
 js:
 1.bootstrap4
