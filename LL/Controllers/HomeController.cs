@@ -1,6 +1,7 @@
 ﻿using LL.Models.ComomModel;
 using LLBLL.IService;
 using LLBLL.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
@@ -41,9 +42,9 @@ namespace LL.Controllers
 
             catch (Exception ex)
             {
-                logger.LogError("HomeController ex"+ex.ToString());
+                logger.LogError("HomeController ex" + ex.ToString());
             }
-           
+
             #endregion
         }
 
@@ -54,11 +55,10 @@ namespace LL.Controllers
         [Authorize]
         public IActionResult Index()
         {
-          
+
             try
             {
                 #region  //获取登录信息1 Claims
-
                 //获取登录信息1
 
                 var a = HttpContext.User.Claims.Select(d => new { d.Type, d.Value }).ToList();
@@ -75,18 +75,20 @@ namespace LL.Controllers
                 bool isLogin = HttpContext.User.Identity.IsAuthenticated;
                 string type = User.Identity.AuthenticationType; //验证方式
             }
-           
+
             catch (Exception ex)
             {
-                logger.LogError("Home/Index ex:"  + ex.ToString());
+                logger.LogError("Home/Index ex:" + ex.ToString());
             }
             return View();
         }
 
         #region  JwtBearer 数据保护组件
-        [HttpGet]
         //Jwt验证
-        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = "LLCoreCookie")]
+        //多个身份验证
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme + "," + "LLCoreCookie")]
         public IActionResult GetData()
         {
             try
