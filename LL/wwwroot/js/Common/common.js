@@ -61,6 +61,30 @@ var commonajax = {
             }
         });
 
+    },
+    AjaxN: function (method, url, data, successfn, errorfn) {
+
+        $.ajax({
+            url: url,
+            type: method,
+            async: false,
+            //traditional: true,
+            data: data,
+            dataType: 'json',
+        
+            error: function () { DiaLog("亲，提交出错了，稍后再试哦……") },
+            success: function (d) {
+                successfn(d);
+            },
+            error: function errorCallback(xmlHttpRequest, textStatus, errorThrown) {
+                if (errorfn == null) {
+                    common.LayerAlert(errorThrown + ":" + textStatus);
+                } else {
+                    errorfn();
+                }
+            }
+        });
+
     }
     
 }

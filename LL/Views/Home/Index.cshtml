@@ -14,7 +14,7 @@
 
     <script>
         $(function () {
-            commonajax.Ajax("GET", "/Home/GetData", null, function (d) {
+            commonajax.AjaxN("GET", "/Home/GetData", null, function (d) {
                 console.log(JSON.stringify(d));
             }, null);
         });

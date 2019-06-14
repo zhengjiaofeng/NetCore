@@ -30,4 +30,12 @@
         /// </summary>
         public string SecretKey { get; set; }
     }
+
+    public class CookieSetting
+    {
+        /// <summary>
+        /// CookieScheme
+        /// </summary>
+        public string CookieScheme { get; set; }
+    }
 }

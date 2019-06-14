@@ -23,6 +23,7 @@ namespace LL.Controllers
         #region 服务声明
         private readonly IOptions<LLSetting> settings;
         private readonly IOptions<JWTSetting> jwtsettings;
+        private readonly IOptions<CookieSetting> cookiesetting;
         /// <summary>
         /// 公钥
         /// </summary>
@@ -39,10 +40,11 @@ namespace LL.Controllers
         private ILogger<AccountController> logger;
 
         #endregion
-        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IUsersService _iUsersService, ILogger<AccountController> _logger)
+        public AccountController(IOptions<LLSetting> _settings, IOptions<JWTSetting> _wtsettings, IOptions<CookieSetting> _cookiesetting, IUsersService _iUsersService, ILogger<AccountController> _logger)
         {
             settings = _settings;
             jwtsettings = _wtsettings;
+            cookiesetting = _cookiesetting;
             rsaPrivateKey = settings.Value.RsaPrivateKey;
             rsaPublicKey = settings.Value.RsaPublicKey;
             iUsersService = _iUsersService;
@@ -130,7 +132,7 @@ namespace LL.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Sid, model.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
 
-                await HttpContext.SignInAsync("LLCoreCookie1", new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(60) });
+                await HttpContext.SignInAsync(cookiesetting.Value.CookieScheme, new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(60) });
                 #endregion
 
                 #region Token
@@ -185,9 +187,14 @@ namespace LL.Controllers
         /// <returns></returns>
         public async Task<IActionResult> LoginOut()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(cookiesetting.Value.CookieScheme);
             return RedirectToAction("Index", "Home");
 
+        }
+
+        public IActionResult Denied()
+        {
+            return View();
         }
     }
 }
