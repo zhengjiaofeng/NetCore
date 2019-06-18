@@ -34,10 +34,7 @@ namespace LL.Controllers
                 logger = _logger;
                 #region .net core 保护组件
                 protector = _provider.CreateProtector("users_Protector");
-                //解密
-                //var ss = "CfDJ8DCIxvIQj1JHpoICZUqAnotCscglDRE0Ce0QQQhHOhMXc3DmM8jBVZWpoa0kDvOXyPDa-CloF3T4VpVi0lzHqVWdPdQY694UUQaLigX6eYtpejjBCQ1KBIzSISv-4Zk62w";
-                ////解密
-                //var result = protector.Unprotect(ss);
+
             }
 
             catch (Exception ex)
@@ -52,7 +49,7 @@ namespace LL.Controllers
         /// Authorize--身份验证标识
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "LLCoreCookie")]
         public IActionResult Index()
         {
 
@@ -86,9 +83,9 @@ namespace LL.Controllers
         #region  JwtBearer 数据保护组件
         //Jwt验证
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //[Authorize(AuthenticationSchemes = "LLCoreCookie")]
+        [Authorize(AuthenticationSchemes = "LLCoreCookie")]
         //多个身份验证
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme + "," + "LLCoreCookie")]
+        [Authorize(Policy = "LL_Jwt")]
         public IActionResult GetData()
         {
             try

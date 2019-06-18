@@ -150,10 +150,8 @@ namespace LL.Controllers
                   //签名
                   signingCredentials: creds);
 
-
                 #endregion
                 #endregion
-
 
                 result.isSucess = true;
                 result.token = new JwtSecurityTokenHandler().WriteToken(token);
