@@ -4,7 +4,7 @@ core:
 1.Cookie Authentication (planting 覆写验证返回)
 2.加密算法：Rsa,MD5 
 3.EFcore（ 仓储模式planting）
-4.JwtBearer(planting 覆写验证返回)
+4.JwtBearer( 覆写验证返回 )
 5.SignalR （planting）
 6.数据保护IDataProtectionProvider
 7.NLog组件
