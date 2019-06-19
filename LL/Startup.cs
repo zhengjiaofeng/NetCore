@@ -45,6 +45,9 @@ namespace LL
             #region ConfigureServices中读取配置
             string Issuer = Configuration.GetSection("JWTSetting").GetSection("Issuer").Value;
             string CookieScheme = Configuration.GetSection("CookieSetting").GetSection("CookieScheme").Value;
+
+            string Audience = Configuration.GetSection("JWTSetting:Audience").Value;
+            string SecretKey = Configuration.GetSection("JWTSetting:SecretKey").Value;
             #endregion
 
             #region Authentication cookie,JwtBearer 认证配置
@@ -92,6 +95,7 @@ namespace LL
             {
                 option.AddPolicy("LL_Jwt", policy =>
                 {
+                    //参数约束
                     policy.AddRequirements(jwtAuthorizationRequirement);
                 });
 
@@ -104,11 +108,11 @@ namespace LL
                 o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     //Token颁发机构
-                    ValidIssuer = "https://localhost:44303/",
+                    ValidIssuer = Issuer,
                     //颁发给谁
-                    ValidAudience = "https://localhost:44303/",
+                    ValidAudience = Audience,
                     //这里的key要进行加密，需要引用Microsoft.IdentityModel.Tokens
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LL_2AWopCMMgEIWt6KkzxEJD0EA4xreXLINaQIDAQABAoGAcUQIoKWyldZa8xnPDJTMKIV8GpeuzebKWvwp5dIu+miTdzmZX4weeHADRNb")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey)),
                     //验证token 有效期
                     ValidateLifetime = true,
                     //ValidateIssuer = true,
@@ -143,7 +147,7 @@ namespace LL
             // Singleton ：整个应用程序生命周期以内只创建一个实例
             services.AddTransient<IUsersService, UsersService>();
 
-            //jwt 自定义验证AuthorizationHandler
+            //jwt 自定义验证AuthorizationHandler时间
             services.AddSingleton<IAuthorizationHandler, JwtAuthorizationHandler>();
             #endregion
 

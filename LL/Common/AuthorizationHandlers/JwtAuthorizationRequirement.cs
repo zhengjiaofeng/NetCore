@@ -28,15 +28,15 @@ namespace LL.Models.Handlers
             //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             //this.signingCredentials = creds;
 
-            this.issuer = "";
-            this.audience = "";
-            this.expires = DateTime.Now.AddMinutes(65);
-            //对称秘钥
-            var SecretKey = "LL_2AWopCMMgEIWt6KkzxEJD0EA4xreXLINaQIDAQABAoGAcUQIoKWyldZa8xnPDJTMKIV8GpeuzebKWvwp5dIu+miTdzmZX4weeHADRNb";
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
-            //签名证书(秘钥，加密算法)
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            this.signingCredentials = creds;
+            //this.issuer = "";
+            //this.audience = "";
+            //this.expires = DateTime.Now.AddMinutes(65);
+            ////对称秘钥
+            //var SecretKey = "LL_2AWopCMMgEIWt6KkzxEJD0EA4xreXLINaQIDAQABAoGAcUQIoKWyldZa8xnPDJTMKIV8GpeuzebKWvwp5dIu+miTdzmZX4weeHADRNb";
+            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+            ////签名证书(秘钥，加密算法)
+            //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            //this.signingCredentials = creds;
         }
 
 

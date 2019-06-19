@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace LL.Common.Handlers
 {
+    /// <summary>
+    /// jwt handler 事件
+    /// </summary>
     public class JwtAuthorizationHandler : AuthorizationHandler<JwtAuthorizationRequirement>
     {
         private readonly IOptions<JWTSetting> jwtsettings;
