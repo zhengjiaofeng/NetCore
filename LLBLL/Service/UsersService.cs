@@ -25,7 +25,6 @@ namespace LLBLL.Service
         {
             List<Users> lists = new List<Users>();
             lists = llDbContext.Users.ToList();
-
             return lists;
         }
 

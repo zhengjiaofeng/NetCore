@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LLBLL.Common
@@ -21,6 +23,15 @@ namespace LLBLL.Common
         {
             return await dbContext.SaveChangesAsync() > 0;
         }
+
+        /// <summary>
+        /// 执行sql
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public IQueryable<TEntity> FromSql<TEntity>(string sql, params object[] parameters) where TEntity : class => dbContext.Set<TEntity>().FromSql(sql, parameters);
 
         public void Dispose()
         {

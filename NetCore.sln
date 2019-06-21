@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTesSelenium", "XUnitTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LL", "LL\LL.csproj", "{47050254-DFE2-42B1-B228-32CCF1ADBD52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLBLL", "LLBLL\LLBLL.csproj", "{93936131-3E45-4302-865A-9A39AED25D77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLBLL", "LLBLL\LLBLL.csproj", "{93936131-3E45-4302-865A-9A39AED25D77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLSignalR", "LLSignalR\LLSignalR.csproj", "{9DB6C520-F172-4A48-940A-BF08C4643CE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{93936131-3E45-4302-865A-9A39AED25D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93936131-3E45-4302-865A-9A39AED25D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93936131-3E45-4302-865A-9A39AED25D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DB6C520-F172-4A48-940A-BF08C4643CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DB6C520-F172-4A48-940A-BF08C4643CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DB6C520-F172-4A48-940A-BF08C4643CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DB6C520-F172-4A48-940A-BF08C4643CE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

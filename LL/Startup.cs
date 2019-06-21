@@ -91,6 +91,12 @@ namespace LL
 
             #region Jwt自定义策略
 
+            /*
+             * 1.定义 policy
+             * 2.定义 AuthorizationHandler 事件
+             *             
+             */
+
             services.AddAuthorization(option =>
             {
                 option.AddPolicy("LL_Jwt", policy =>
@@ -139,7 +145,8 @@ namespace LL
             services.AddDbContext<LLDbContext>(options =>
             {
                 options.UseSqlServer(
-              Configuration.GetConnectionString("LLDbContext"));
+              //数据是sql server 2008  开启 UseRowNumberForPaging
+              Configuration.GetConnectionString("LLDbContext"),b=>b.UseRowNumberForPaging());
             });
 
             // Transient： 每一次GetService都会创建一个新的实例

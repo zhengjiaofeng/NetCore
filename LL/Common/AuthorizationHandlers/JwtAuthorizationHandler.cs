@@ -41,6 +41,7 @@ namespace LL.Common.Handlers
 
             //从AuthorizationHandlerContext转成HttpContext，以便取出表求信息
             var httpContext = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext).HttpContext;
+            #region jwt token 验证逻辑 
             //获取Authorization参数
             bool result = httpContext.Request.Headers.TryGetValue("Authorization", out StringValues tokenstr);
             if (!result || string.IsNullOrEmpty(tokenstr))
@@ -52,9 +53,9 @@ namespace LL.Common.Handlers
             else
             {
                 JwtComom jwtcommon = new JwtComom();
-                string token= tokenstr.ToString().Replace("Bearer ","");
+                string token = tokenstr.ToString().Replace("Bearer ", "");
                 //jwt token 验证
-                JwtSecurityToken jwtSecurityToken= jwtcommon.ValidateAndDecode(jwtsettings, token);
+                JwtSecurityToken jwtSecurityToken = jwtcommon.ValidateAndDecode(jwtsettings, token);
                 if (jwtSecurityToken != null)
                 {
                     valiResult = true;
@@ -64,6 +65,9 @@ namespace LL.Common.Handlers
                     valiResult = false;
                 }
             }
+
+            #endregion
+
 
             if (valiResult)
             {

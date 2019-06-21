@@ -84,7 +84,7 @@ namespace LL.Controllers
         //Jwt验证
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(AuthenticationSchemes = "LLCoreCookie")]
-        //多个身份验证
+        //多个身份验证  AuthenticationSchemes+Policy
         [Authorize(Policy = "LL_Jwt")]
         public IActionResult GetData()
         {
@@ -92,8 +92,7 @@ namespace LL.Controllers
             {
                 List<Users> userList = new List<Users>();
                 userList = iUsersService.GetUsers();
-
-                var result = userList.Select(d => new { Id = protector.Protect(d.Id.ToString()), UserName = d.UserName }).ToList();
+                 var result = userList.Select(d => new { Id = protector.Protect(d.Id.ToString()), UserName = d.UserName }).ToList();
                 //解密
                 var unss = result.FirstOrDefault().Id;
                 var usresult = protector.Unprotect(unss.ToString());
