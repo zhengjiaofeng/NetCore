@@ -42,7 +42,7 @@ namespace LLSignalR.Hubs
         }
 
         /// <summary>
-        /// 客户端失去连接事件
+        /// 客户端断开连接事件
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
