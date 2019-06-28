@@ -34,10 +34,12 @@ namespace LLSignalR
             {
                 //映射地址，供前端调用
                 routes.MapHub<MessageHub>("/MessageHub");
+                routes.MapHub<ChatHub>("/ChatHub");
             });
             app.UseMvc(routes =>
             {
-                routes.MapRoute(name: "default", template: "{controller=SignalR}/{action=Index}/{id?}");
+                routes.MapRoute(name: "default", template: "{controller=Chat}/{action=Index}/{id?}");
+
             });
         }
     }

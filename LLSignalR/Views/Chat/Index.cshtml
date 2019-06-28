@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<html>
+<head>
+    <title>聊天</title>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/Signalr/signalr.js"></script>
+
+    <script type="text/javascript">
+        //连接signalr
+        const connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build();
+        connection.on("revicemsg", function (username, message) {
+            var htmlstr = "<li>" + username + ":" + message+"</li>";
+            $("#sig_id").append(htmlstr);
+        });
+        connection.start().catch(err => console.error(err.toString()));
+
+        //用户名
+        const userName = Math.random().toString(36).substr(2);
+
+        //发送信息事件
+        function SendMessage() {
+            var msg = $("#message").val();
+            connection.invoke("SendAllMessage", userName, msg).catch(err => console.error(err.toString()));
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <input id="message" />
+        <input type="button" value="发送" onclick="SendMessage()" />
+    </div>
+    <ul id="sig_id">
+    </ul>
+
+</body>
+</html>
+

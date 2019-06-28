@@ -12,24 +12,21 @@
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/Signalr/signalr.js"></script>
     <script type="text/javascript">
-            //连接signalr
-            const connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
-            connection.on("recupdate", function (r_num) {
-                debugger;
-                $("#signalrNum").text(r_num);
+        //连接signalr
+        const connection = new signalR.HubConnectionBuilder().withUrl("/MessageHub").build();
+        connection.on("recupdate", function (r_num) {
+            $("#signalrNum").text(r_num);
         });
 
         connection.on("recfinish", function () {
-            debugger;
             connection.stop();
             $("#signalrNum").text("recfinish");
         });
-
-            connection.start().catch(err => console.error(err.toString()));
+        connection.start().catch(err => console.error(err.toString()));
     </script>
 </head>
 <body>
-   <h2>Signal</h2>
+    <h2>Signal</h2>
     <div id="signalrNum"> </div>
 </body>
 </html>
