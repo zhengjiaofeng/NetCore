@@ -1,0 +1,20 @@
+﻿.Signalr_Body {
+    border: 1px solid #ebebeb;
+    /*min-height: 1000px;*/
+}
+
+.signalr_head {
+    margin-top: 20px;
+}
+
+.signalr_right_users {
+    min-height: 800px;
+}
+/*中间-聊天记录 */
+.signalr_left_center {
+    min-height: 500px;
+}
+
+.signalr_send_btn {
+    margin-bottom:10px;
+}

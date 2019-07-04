@@ -2,26 +2,33 @@
 @using Microsoft.AspNetCore.Authentication
 @{
     ViewData["Title"] = "Index";
+    Layout = "_Layout";
 }
 
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="~/lib/jquery/jquery.js"></script>
-    <script src="~/lib/layer/layer.js"></script>
+    <link href="~/css/Home/Home.css" rel="stylesheet" asp-append-version="true"/>
+    @*<script src="~/lib/jquery/jquery.js"></script>
+            <script src="~/lib/layer/layer.js"></script>
+        <script src="~/js/Common/common.js" asp-append-version="true"></script>*@
     <script src="~/lib/jquery/jquery.cookie.js"></script>
-    <script src="~/js/Common/common.js" asp-append-version="true"></script>
+
 
     <script>
-        $(function () {
-            commonajax.Ajax("GET", "/Home/GetData", null, function (d) {
-                console.log(JSON.stringify(d));
-            }, null);
-        });
+        //$(function () {
+        //    commonajax.Ajax("GET", "/Home/GetData", null, function (d) {
+        //        console.log(JSON.stringify(d));
+        //    }, null);
+        //});
     </script>
 </head>
 <body>
-    <h2>@User.Identity.Name</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 home_body" >正文</div>
+        </div>
+    </div>
 </body>
 </html>
 

@@ -1,0 +1,23 @@
+﻿.border_bottom_solid {
+    border-bottom: 1px solid #ebebeb;
+}
+
+.border_right_solid {
+    border-right: 1px solid #ebebeb;
+}
+
+.border_left_solid {
+    border-left: 1px solid #ebebeb;
+}
+
+.border_top_solid {
+    border-top: 1px solid #ebebeb;
+}
+
+.pull_left {
+    float: left;
+}
+
+.pull_right {
+    float: right;
+}

@@ -44,7 +44,7 @@ var DoLogin = {
                     cookie.cookieremove("cookie_token")
 
                     var expiresDate = new Date();
-                    expiresDate.setTime(expiresDate.getTime() + (1 * 60 * 1000)); 
+                    expiresDate.setTime(expiresDate.getTime() + (65 * 60 * 1000)); 
                     cookie.cookieset("cookie_token", d.token, expiresDate)
                     window.location.href = d.msg;
                 } else {

@@ -1,0 +1,52 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<html>
+<head>
+    <title>Chat</title>
+    <link href="~/css/Signalr/Signalr.css" rel="stylesheet" asp-append-version="true" />
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/Signalr/WebChat.js" asp-append-version="true"></script>
+</head>
+<body>
+    <div class="container-fluid Signalr_Body">
+        <div class="row border_bottom_solid">
+            <!-- 头部 -->
+            <div class="col">
+                <h3 class="signalr_head">姓名</h3>
+            </div>
+        </div>
+        <div class="row">
+            <!-- 左边-->
+            <div class="col-8 border_right_solid">
+                <div class="row signalr_left_center" >
+                    <div class="col">
+                        <ul id="rec_message"></ul>
+                    </div>
+                </div>
+                <div class="row border_top_solid">
+                    <div class="col">
+                        <div class="form-group">
+                            <button>button</button>
+                            <button>button</button>
+                            <button>button</button>
+                        </div>
+                        <div class="form-group">
+                            <textarea  class="form-control" id="send_message"  style="height:200px;"></textarea>
+                        </div>
+                        <div class="form-group ">
+                            <button type="button" class="btn btn-outline-info pull_right signalr_send_btns" onclick="SendMessage()" >发送</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--右边 -->
+            <div class="col-4 signalr_right_users">用户集合</div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+<html>
+<head>
+    <title>LL.Com</title>
+    <link href="~/lib/bootstrap4/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/Common/Common.css" rel="stylesheet" asp-append-version="true"/>
+    <link href="~/css/Layout.css" rel="stylesheet" asp-append-version="true" />
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/layer/layer.js"></script>
+    <script src="~/lib/bootstrap4/bootstrap.js"></script>
+    <script src="~/js/Common/common.js" asp-append-version="true"></script>
+</head>
+<body>
+    <!-- 头部-->
+    <div class="ll_nav ">
+        <ul class="nav  justify-content-center ll_nav_top">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Signalr</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">图片</a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="container-fluid body">
+        <div class="row">
+            <!--左边-->
+            <div class="col-md-4 ">
+                <div class="container">
+                    <div class="row">
+                        <!-- offset列偏移-->
+                        <div class="list-group col-md-4  offset-md-6  ">
+                            @*<a href="#" class="list-group-item disabled">
+                                    Cras justo odio
+                                </a>
+                                <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                                <a href="#" class="list-group-item">Morbi leo risus</a>
+                                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                                <a href="#" class="list-group-item">@User.Identity.Name</a>*@
+                            <div class="list-group-item  ">
+                                <div class="ll_item" style="margin-top:10px;">
+                                    <img src="~/images/Home/face.jpg" class="rounded-circle ll_img " />
+                                    <div>@User.Identity.Name</div>
+                                </div>
+                            </div>
+                            <div class="list-group-item  ">
+                                <div class="ll_item">
+                                    我的资料
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--右边 -->
+            <div class="col-md-8 ll_right">
+                @RenderBody()
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- 右侧聊天-->
+    <div class="ll_signalr home_center" >
+    @*<img  src="~/images/Layout/kefu.jpg"  class="ll_img"/>*@
+        补充
+    </div>
+    <!--底部 -->
+    <div class="foot">
+        底部
+    </div>
+</body>
+</html>

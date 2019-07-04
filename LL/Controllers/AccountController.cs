@@ -132,7 +132,7 @@ namespace LL.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Sid, model.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, model.UserName));
 
-                await HttpContext.SignInAsync(cookiesetting.Value.CookieScheme, new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.UtcNow.AddMinutes(60) });
+                await HttpContext.SignInAsync(cookiesetting.Value.CookieScheme, new ClaimsPrincipal(identity), new AuthenticationProperties { ExpiresUtc = DateTime.Now.AddMinutes(20) });
                 #endregion
 
                 #region Token

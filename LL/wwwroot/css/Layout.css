@@ -1,0 +1,44 @@
+﻿
+.ll_nav {
+    border-bottom: 1px solid #ebebeb;
+}
+
+.ll_nav_top {
+    margin-top: 20px;
+}
+
+.body {
+    margin-top: 30px;
+}
+
+.foot {
+    margin-top: 50px;
+}
+
+.ll_img {
+    width: 70px;
+    height: 70px;
+}
+
+.ll_item {
+    text-align: center;
+}
+
+/*固定位置 */
+.ll_signalr {
+    position: fixed;
+    width: 70px;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+    right: 0;
+    bottom: 20%;
+    z-index: 1000;
+    text-align: center;
+    cursor: pointer;
+}
+
+.ll_img {
+    width: 50px;
+    height: 50px;
+}
