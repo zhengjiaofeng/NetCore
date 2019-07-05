@@ -20,6 +20,7 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using System.Collections.Generic;
 using System.Text;
+using UEditor.Core;
 
 namespace LL
 {
@@ -39,6 +40,7 @@ namespace LL
             //初始化配置
             services.Configure<LLSetting>(Configuration.GetSection("LLSetting"));
             services.Configure<JWTSetting>(Configuration.GetSection("JWTSetting"));
+            services.Configure<ImagePathSetting>(Configuration.GetSection("ImagePathSetting"));
             #endregion
 
 
@@ -130,13 +132,18 @@ namespace LL
                 };
 
             });
-        
-          
+
+
             #endregion
 
             #endregion
 
 
+            #endregion
+
+            #region  UEditor文本编辑器
+            //services.AddUEditorService("ueditor_config.json", false,"/");
+            services.AddUEditorService();
             #endregion
 
             #region 依赖注入 服务

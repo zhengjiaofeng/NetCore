@@ -17,13 +17,13 @@ var common = {
         });
     },
     //加密
-    rsaencrypt: function (key,value) {
+    rsaencrypt: function (key, value) {
         var encrypt = new JSEncrypt();
         encrypt.setPublicKey(key);
         var encrypt_data = encrypt.encrypt(value);
         return encrypt_data;
     }
-    
+
 }
 
 var commonajax = {
@@ -71,7 +71,7 @@ var commonajax = {
             //traditional: true,
             data: data,
             dataType: 'json',
-        
+
             error: function () { DiaLog("亲，提交出错了，稍后再试哦……") },
             success: function (d) {
                 successfn(d);
@@ -86,7 +86,7 @@ var commonajax = {
         });
 
     }
-    
+
 }
 
 
@@ -115,4 +115,40 @@ class cookiehelep {
     }
 }
 
+/*boostrap fileinput 图片上传初始化 */
+class ImgFileInput {
+
+    /**
+     * 
+     * @param {any} inputid--- 绑定文件上传控件的id
+     * @param {any} uploadUrl---上传的地址
+     * @param {any} success_fn--上传成功后事情
+     */
+    Init(inputid, uploadUrl, success_fn) {
+        var control = $('#' + inputid);
+
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, //上传的地址
+            allowedFileExtensions: ['jpg', 'png', 'gif'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式      
+            showPreview: false,//是否显示文件预览
+            showRemove: false,//是否显示删除/清除按钮
+            showCancel: false,//是否显示文件上传取消按钮
+            showUploadedThumbs: false,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            /* 上传成功事件*/
+            fileuploaded: control.on('fileuploaded', function (event, data, previewId, index) {
+                success_fn(data);
+            }),
+            /*上传出错误处理*/
+            fileerror: control.on('fileerror', function (event, data, msg) { console.log("Upload failed") }),
+
+        });
+
+
+    }
+}
 

@@ -38,4 +38,13 @@
         /// </summary>
         public string CookieScheme { get; set; }
     }
+
+
+    public class ImagePathSetting
+    {
+        /// <summary>
+        /// 聊天图片保存路径
+        /// </summary>
+        public string ChatImg { get; set; }
+    }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace LLSignalR
 {
@@ -12,6 +13,7 @@ namespace LLSignalR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             #region 跨域请求配置
             services.AddCors(options => options.AddPolicy("CorsPolicy",
             builder =>
@@ -22,7 +24,18 @@ namespace LLSignalR
             }));
             #endregion
 
-            services.AddSignalR();
+            #region SignalR
+            services.AddSignalR()
+            #region MessagePack   引用Microsoft.AspNetCore.SignalR.Protocols.MessagePack
+                .AddMessagePackProtocol(options =>
+            {
+                //options.FormatterResolvers = new List<MessagePack.IFormatterResolver>()
+                //{
+                //     MessagePack.Resolvers.StandardResolver.Instance
+                // };
+            });
+            #endregion
+            #endregion
 
         }
 
@@ -51,7 +64,7 @@ namespace LLSignalR
             });
             #region 跨域中间件
 
-           
+
 
             #endregion
             app.UseMvc(routes =>

@@ -18,10 +18,10 @@ namespace LLSignalR.Hubs
         /// 对所有人发生信息
         /// </summary>
         /// <returns></returns>
-        public async Task SendAllMessage(string username, string message)
+        public async Task SendAllMessage(ChatMessage chatMessage)
         {
             
-            await Clients.All.SendAsync("revicemsg",  username, message);
+            await Clients.All.SendAsync("revicemsg", chatMessage.Sender, chatMessage.Message);
         }
 
         #endregion
