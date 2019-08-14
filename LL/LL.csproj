@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Attributes\" />
+    <Folder Include="wwwroot\upload\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>

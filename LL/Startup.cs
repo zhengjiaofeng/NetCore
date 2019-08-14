@@ -14,11 +14,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UEditor.Core;
 
@@ -128,7 +129,7 @@ namespace LL
                     ValidateIssuerSigningKey = true
                     ///允许的服务器时间偏移量
                     //ClockSkew = TimeSpan.Zero
-                    
+
                 };
 
             });
@@ -142,8 +143,9 @@ namespace LL
             #endregion
 
             #region  UEditor文本编辑器
-            //services.AddUEditorService("ueditor_config.json", false,"/");
-            services.AddUEditorService();
+            services.AddUEditorService(configFileRelativePath: "ueditor_config.json",
+       isCacheConfig: false,
+       basePath: "");
             #endregion
 
             #region 依赖注入 服务
@@ -153,7 +155,7 @@ namespace LL
             {
                 options.UseSqlServer(
               //数据是sql server 2008  开启 UseRowNumberForPaging
-              Configuration.GetConnectionString("LLDbContext"),b=>b.UseRowNumberForPaging());
+              Configuration.GetConnectionString("LLDbContext"), b => b.UseRowNumberForPaging());
             });
 
             // Transient： 每一次GetService都会创建一个新的实例
@@ -218,6 +220,14 @@ namespace LL
             //中间件排序很重要--排序错误会导致中间件异常错误  https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/middleware/index?view=aspnetcore-2.1#order
             ///添加静态资源访问
             app.UseStaticFiles();
+
+            //新增静态文件访问权限
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "upload")),
+                RequestPath = "/upload"
+            });
 
             //验证中间件--cookie身份认证  Must go before UseMvc
             app.UseAuthentication();

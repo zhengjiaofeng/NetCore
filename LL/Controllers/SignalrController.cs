@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace LL.Controllers
@@ -32,6 +33,13 @@ namespace LL.Controllers
        // [Authorize(AuthenticationSchemes = "LLCoreCookie")]
         public IActionResult Index()
         {
+            List<string> list = new List<string>() { "1", "2", "3" };
+
+            var a = false;
+
+
+            var b = a;
+
             return View();
         }
 

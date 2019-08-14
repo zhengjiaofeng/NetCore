@@ -9,21 +9,18 @@ namespace LL.Controllers
 {
     public class UeditorController : Controller
     {
-        private UEditorService ue;
+        private readonly UEditorService ueditorService;
 
-        public UeditorController(UEditorService _ue)
+        public UeditorController(UEditorService _ueditorService)
         {
-            ue = _ue;
+            ueditorService = _ueditorService;
 
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
-        public void UpLoad()
+        public ContentResult Upload()
         {
-            ue.Upload(HttpContext);
+            var response = ueditorService.UploadAndGetResponse(HttpContext);
+            return Content(response.Result, response.ContentType);
         }
     }
 }
