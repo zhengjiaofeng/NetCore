@@ -1,5 +1,7 @@
 ﻿//连接signalr
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44377/ChatHub").withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol()).build();
+var cookie = new cookiehelep();
+var cookie_token = cookie.cookieget("cookie_token");
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44377/ChatHub?name=1").withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol()).build();
 connection.on("revicemsg", function (username, message) {
     var htmlstr = "<li>" + username + ":" + message + "</li>";
     $("#rec_message").append(htmlstr);

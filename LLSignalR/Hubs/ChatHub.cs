@@ -1,4 +1,5 @@
 ﻿using LLSignalR.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LLSignalR.Hubs
 {
+    //[Authorize(Policy = "Hubs")]
     public class ChatHub : Hub
     {
         /// <summary>
@@ -20,7 +22,7 @@ namespace LLSignalR.Hubs
         /// <returns></returns>
         public async Task SendAllMessage(ChatMessage chatMessage)
         {
-            
+
             await Clients.All.SendAsync("revicemsg", chatMessage.Sender, chatMessage.Message);
         }
 
@@ -32,7 +34,15 @@ namespace LLSignalR.Hubs
         /// <returns></returns>
         public override async Task OnConnectedAsync()
         {
+
+
+
             string connectionId = Context.ConnectionId;
+
+            #region 获取用户信息
+            HttpContext httpContext = Context.GetHttpContext();
+            string userNmae = httpContext.Request.Query["userNmae"];
+            #endregion
 
             var charUser = chatHubDbContext.chatUser.FirstOrDefault(d => d.UserConnectId == connectionId);
             if (charUser == null)

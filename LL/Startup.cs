@@ -95,11 +95,12 @@ namespace LL
             #region Jwt自定义策略
 
             /*
-             * 1.定义 policy
-             * 2.定义 AuthorizationHandler 事件
-             *             
+             * 1.添加授权自定义策略 policy
+             * 2.设置认证方式(cookie、bearer、openid)
+             * 3.添加JWT认证机制            
              */
 
+            //1.添加授权自定义策略
             services.AddAuthorization(option =>
             {
                 option.AddPolicy("LL_Jwt", policy =>
@@ -108,6 +109,7 @@ namespace LL
                     policy.AddRequirements(jwtAuthorizationRequirement);
                 });
 
+                //2.设置认证方式(cookie、bearer、openid)
             }).AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
