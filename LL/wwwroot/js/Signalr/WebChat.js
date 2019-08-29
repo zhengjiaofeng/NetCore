@@ -1,15 +1,22 @@
 ﻿//连接signalr
 var cookie = new cookiehelep();
 var cookie_token = cookie.cookieget("cookie_token");
-const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44377/ChatHub?name=1").withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol()).build();
+var userName = $("#userName").html();
+const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44377/ChatHub?userNmae=" + userName).withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol()).build();
 connection.on("revicemsg", function (username, message) {
     var htmlstr = "<li>" + username + ":" + message + "</li>";
     $("#rec_message").append(htmlstr);
 });
+
+//添加用户集合
+connection.on("addUsers", function (userName) {
+    var htmlstr = "<li>" + userName + ":</li>";
+    $("#rec_users").append(htmlstr)
+});
+//移除用户列表
 connection.start().catch(err => console.log(err.toString()));
 
-//用户名
-const userName = Math.random().toString(36).substr(2);
+
 
 //发送信息事件
 function SendMessage() {

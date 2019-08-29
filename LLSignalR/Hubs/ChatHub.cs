@@ -15,7 +15,7 @@ namespace LLSignalR.Hubs
         /// </summary>
         public static ChatHubDbContext chatHubDbContext = new ChatHubDbContext();
 
-        #region 发生信息
+        #region 发送信息
         /// <summary>
         /// 对所有人发生信息
         /// </summary>
@@ -24,6 +24,26 @@ namespace LLSignalR.Hubs
         {
 
             await Clients.All.SendAsync("revicemsg", chatMessage.Sender, chatMessage.Message);
+        }
+
+        /// <summary>
+        /// 添加用户列表
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task AddUserList(string userName)
+        {
+            await Clients.All.SendAsync("addUsers", userName);
+        }
+
+        /// <summary>
+        /// 移除用户列表
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task RemoveUserList(string userName)
+        {
+            await Clients.All.SendAsync("delUsers", userName);
         }
 
         #endregion
@@ -35,8 +55,6 @@ namespace LLSignalR.Hubs
         public override async Task OnConnectedAsync()
         {
 
-
-
             string connectionId = Context.ConnectionId;
 
             #region 获取用户信息
@@ -44,12 +62,16 @@ namespace LLSignalR.Hubs
             string userNmae = httpContext.Request.Query["userNmae"];
             #endregion
 
-            var charUser = chatHubDbContext.chatUser.FirstOrDefault(d => d.UserConnectId == connectionId);
-            if (charUser == null)
+            if (!string.IsNullOrEmpty(userNmae))
             {
-                //添加用户
-                chatHubDbContext.chatUser.Add(new ChatUser { UserConnectId = connectionId });
+                if (!chatHubDbContext.chatUser.Any(d => d.UserName == userNmae))
+                {
+                    //添加用户
+                    chatHubDbContext.chatUser.Add(new ChatUser { UserConnectId = connectionId, UserName = userNmae });
+                    await AddUserList(userNmae);
+                }
             }
+
 
             await base.OnConnectedAsync();
         }
@@ -62,11 +84,22 @@ namespace LLSignalR.Hubs
         public override async Task OnDisconnectedAsync(Exception ex)
         {
             string connectionId = Context.ConnectionId;
-            var charUser = chatHubDbContext.chatUser.FirstOrDefault(d => d.UserConnectId == connectionId);
-            if (charUser != null)
+
+            #region 获取用户信息
+            HttpContext httpContext = Context.GetHttpContext();
+            string userNmae = httpContext.Request.Query["userNmae"];
+            #endregion
+
+            if (!string.IsNullOrEmpty(userNmae))
             {
-                chatHubDbContext.chatUser.Remove(charUser);
+                var charUser = chatHubDbContext.chatUser.FirstOrDefault(d => d.UserName == userNmae);
+                if (charUser != null)
+                {
+                    chatHubDbContext.chatUser.Remove(charUser);
+                    await RemoveUserList(userNmae);
+                }
             }
+
             await base.OnDisconnectedAsync(ex);
         }
 

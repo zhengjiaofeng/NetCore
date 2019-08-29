@@ -16,6 +16,11 @@ namespace LLSignalR.Models
         /// 记录用户连接id
         /// </summary>
         public string UserConnectId { get; set; }
+
+        /// <summary>
+        /// 用户账号
+        /// </summary>
+        public string UserName { get; set; }
     }
 
     /// <summary>

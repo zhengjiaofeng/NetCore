@@ -1,5 +1,6 @@
 ﻿using LL.Models.ComomModel;
 using LL.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ using System.IO;
 
 namespace LL.Controllers
 {
+    [Authorize(AuthenticationSchemes = "LLCoreCookie")]
     public class SignalrController : Controller
     {
         /// <summary>

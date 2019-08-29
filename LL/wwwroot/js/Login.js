@@ -30,7 +30,7 @@ var DoLogin = {
             UserName: userName,
             PassWord: common.rsaencrypt($("#rsaPublicKey").val(), md5(passWord))
         }
-        var url ="Account/Login"
+        var url ="/Account/Login"
           $.ajax({
             url: url,
               type: "POST",

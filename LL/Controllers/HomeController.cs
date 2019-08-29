@@ -52,7 +52,7 @@ namespace LL.Controllers
         [Authorize(AuthenticationSchemes = "LLCoreCookie")]
         public IActionResult Index()
         {
-
+           
             try
             {
                 #region  //获取登录信息1 Claims
